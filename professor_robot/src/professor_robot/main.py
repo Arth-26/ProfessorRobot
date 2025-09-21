@@ -2,17 +2,15 @@ from fastapi import FastAPI
 
 from .core.database import engine
 from .models.base import Base
+from .routers.usuario_routers import usuarios_router
 
 app = FastAPI()
+
+app.include_router(usuarios_router)
 
 
 def init_db():
     Base.metadata.create_all(bind=engine)
-
-
-@app.get('/')
-def read_root():
-    return {'message': 'Olá Mundo!'}
 
 
 if __name__ == "__main__":

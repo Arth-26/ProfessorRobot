@@ -12,9 +12,6 @@ class UsuarioBase(BaseModel):
     ativo: Optional[bool] = True
     tipo: str
 
-    class Config:
-        orm_mode = True
-
 
 class UsuarioCreate(UsuarioBase):
     senha: str
