@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import UUID, Boolean, Column, DateTime, String
+from sqlalchemy import UUID, Boolean, Column, DateTime, String, Text
 from sqlalchemy.sql import func
 
 from ..base import Base
@@ -14,10 +14,16 @@ class Usuario(Base):
     sobrenome = Column(String(100), nullable=False)
     email = Column(String(255), nullable=False, unique=True, index=True)
     senha = Column(String(255), nullable=False)
-    data_cadastro = Column(DateTime, default=func.now())
+
+    pais = Column(String(100), nullable=False)
+    estado = Column(String(100), nullable=False)
+
+    data_cadastro = Column(DateTime(timezone=True), server_default=func.now())
     ultimo_login = Column(DateTime, onupdate=func.now())
     ativo = Column(Boolean, default=True)
     tipo = Column(String(50))
+    foto_perfil = Column(String(255))
+    sobre_mim = Column(Text())
 
     __mapper_args__ = {
         "polymorphic_identity": "usuario",
