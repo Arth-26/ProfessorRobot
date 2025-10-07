@@ -14,8 +14,7 @@ def clear_professores():
 
 
 def test_request_post_create_professor():
-    '''DEVE RETORNAR STATUS 201 CREATED E MENSAGEM DE SUCESSO E DEVE MOSTRAR
-    O NOVO PROFESSOR CRIADO'''
+    '''DEVE RETORNAR STATUS 201 CREATED E MENSAGEM DE SUCESSO'''
 
     json_body = {
         "nome": "Arthur",
@@ -38,3 +37,25 @@ def test_request_post_create_professor():
     assert professores[0].email == "art@example.com"
     assert professores[0].tipo == "Professor"
     assert professores[0].ativo == True
+
+
+def test_request_patch_update_professor():
+    '''DEVE RETORNAR STATUS 200 OK E MENSAGEM DE SUCESSO. SE NÃO ACHAR O PROFESSOR
+    RETORNA STATUS 404 NOT FOUND E MENSAGEM DE NÃO ENCONTRADO'''
+
+    nome1 = 'Arthur'
+    nome2 = 'Lucas'
+
+    json_body = {
+        "sobrenome": "Alves",
+    }
+
+    response1 = client.patch(f'/professores/{nome1}', json=json_body)
+    response2 = client.patch(f'/professores/{nome2}', json=json_body)
+
+    assert response1.status_code == HTTPStatus.OK
+    assert response1.json() == {'message': 'Professor atualizado com sucesso'}
+    assert professores[0].sobrenome == "Alves"
+
+    assert response2.status_code == HTTPStatus.NOT_FOUND
+    assert response2.json() == {"detail": "Not Found"}

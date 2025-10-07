@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from fastapi import HTTPException
 from typing import List
 
 from fastapi import APIRouter
@@ -38,7 +39,10 @@ def update_professor(nome: str, professor: ProfessorUpdate):
             professores[i] = professor_obj.copy(update=update_data)
             return {'message': 'Professor atualizado com sucesso'}
 
-    return {'message': 'Professor não encontrado'}
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Professor não encontrado"
+        )
 
 
 @professor_router.delete("/{nome}", status_code=HTTPStatus.OK)
@@ -48,4 +52,7 @@ def delete_professor(nome: str):
             professores.remove(professor_obj)
             return {'message': 'Professor removido com sucesso'}
 
-    return {'message': 'Professor não encontrado'}
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail="Professor não encontrado"
+        )
